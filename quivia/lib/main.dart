@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quivia/pages/base_screen.dart';
 import 'package:quivia/pages/home_screen.dart';
 
 void main() {
@@ -15,8 +16,10 @@ class MyApp extends StatelessWidget {
       title: 'Frivia',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'ArchitectsDaughter',
+        scaffoldBackgroundColor: Color.fromRGBO(31, 31, 31, 1.0),
       ),
-      home: const Home(),
+      home: const Base(),
     );
   }
 }
