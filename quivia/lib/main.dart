@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:quivia/pages/base_screen.dart';
-import 'package:quivia/pages/home_screen.dart';
 
 void main() {
   runApp(const MyApp());

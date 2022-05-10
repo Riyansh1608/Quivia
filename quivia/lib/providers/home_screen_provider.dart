@@ -1,16 +1,24 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:quivia/pages/base_screen.dart';
 
 class HomeScreenProvider extends ChangeNotifier {
+  final String? difficulty;
+  final String? typeofquestion;
+  final int? maxQuestion;
   final Dio _dio = Dio();
-  final int _maxQuestion = 10;
+
   List? questions;
   int _currentQuestionCount = 0;
   int _score = 0;
 
   BuildContext context;
-  HomeScreenProvider({required this.context}) {
+  HomeScreenProvider(
+      {required this.context,
+      this.difficulty,
+      this.typeofquestion,
+      this.maxQuestion}) {
     _dio.options.baseUrl = 'https://opentdb.com/api.php';
     _getQuestionFromApi();
   }
@@ -20,18 +28,28 @@ class HomeScreenProvider extends ChangeNotifier {
       '',
       queryParameters: {
         'amount': 10,
-        'type': 'boolean',
-        'difficulty': 'easy',
+        'type': typeofquestion,
+        'difficulty': difficulty,
       },
     );
     var _data = jsonDecode(_response.toString());
     questions = _data["results"];
-    //print(questions![_currentQuestionCount]["correct_answer"]);
+    print(questions![_currentQuestionCount]);
     notifyListeners();
   }
 
   String getCurrentQuestText() {
+    print(
+        "type : $typeofquestion \n amount : $maxQuestion \n difficulty : $difficulty");
     return questions![_currentQuestionCount]["question"];
+  }
+
+  String getCorrectOptionText() {
+    return questions![_currentQuestionCount]["correct_answer"];
+  }
+
+  List<dynamic> getOptionsText() {
+    return questions![_currentQuestionCount]["incorrect_answers"];
   }
 
   void answerQuestion(String _ans) async {
@@ -57,7 +75,7 @@ class HomeScreenProvider extends ChangeNotifier {
       const Duration(seconds: 1),
     );
     Navigator.pop(context);
-    if (_currentQuestionCount == _maxQuestion) {
+    if (_currentQuestionCount == maxQuestion) {
       endGame();
     } else {
       notifyListeners();
@@ -77,12 +95,14 @@ class HomeScreenProvider extends ChangeNotifier {
             "Game Over!",
             style: TextStyle(fontSize: 25, color: Colors.white),
           ),
-          content: Text("Score : $_score/10 "),
+          content: Text("Score : $_score/$maxQuestion "),
         );
       },
     );
     await Future.delayed(const Duration(seconds: 3));
     Navigator.pop(context);
     Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: ((context) => const Base())));
   }
 }

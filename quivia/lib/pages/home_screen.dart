@@ -3,16 +3,28 @@ import 'package:provider/provider.dart';
 import 'package:quivia/providers/home_screen_provider.dart';
 
 class Home extends StatelessWidget {
+  final String difficulty;
+  final String type;
+  final int maxQuestion;
+
   double? _deviceHeight, _deviceWidth;
 
   HomeScreenProvider? _pageProvider;
+  Home(
+      {required this.difficulty,
+      required this.type,
+      required this.maxQuestion});
 
   @override
   Widget build(BuildContext context) {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return ChangeNotifierProvider(
-      create: (_context) => HomeScreenProvider(context: context),
+      create: (_context) => HomeScreenProvider(
+          context: context,
+          difficulty: difficulty,
+          typeofquestion: type,
+          maxQuestion: maxQuestion),
       child: _buildUI(),
     );
   }
@@ -25,7 +37,7 @@ class Home extends StatelessWidget {
           body: SafeArea(
               child: Container(
             padding: EdgeInsets.symmetric(horizontal: _deviceWidth! * 0.05),
-            child: _ui(),
+            child: type == "boolean" ? _booleanUi() : _McqUi(),
           )),
         );
       } else {
@@ -36,22 +48,26 @@ class Home extends StatelessWidget {
     });
   }
 
-  Widget _ui() {
+  Widget _McqUi() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
       children: [
         _questionBox(),
-        Column(
-          children: [
-            _trueButton(),
-            SizedBox(
-              height: _deviceHeight! * 0.02,
-            ),
-            _falseButton(),
-          ],
-        ),
+        _optionsForMcq(),
+      ],
+    );
+  }
+
+  Widget _booleanUi() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        _questionBox(),
+        _booleanButtons(),
       ],
     );
   }
@@ -61,6 +77,18 @@ class Home extends StatelessWidget {
       _pageProvider!.getCurrentQuestText(),
       style: const TextStyle(
           color: Colors.white, fontSize: 25, fontWeight: FontWeight.w400),
+    );
+  }
+
+  Widget _booleanButtons() {
+    return Column(
+      children: [
+        _trueButton(),
+        SizedBox(
+          height: _deviceHeight! * 0.02,
+        ),
+        _falseButton(),
+      ],
     );
   }
 
@@ -93,6 +121,37 @@ class Home extends StatelessWidget {
         style: TextStyle(
             fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
       ),
+    );
+  }
+
+  Widget _option(String _choice) {
+    return MaterialButton(
+      minWidth: _deviceWidth! * 0.8,
+      height: _deviceHeight! * 0.1,
+      onPressed: () {
+        _pageProvider?.answerQuestion(_choice);
+      },
+      child: Text(
+        _choice,
+        style: const TextStyle(color: Colors.white, fontSize: 25),
+      ),
+      color: Colors.blue,
+    );
+  }
+
+  Widget _optionsForMcq() {
+    List<dynamic> options = _pageProvider!.getOptionsText();
+    String correctOption = _pageProvider!.getCorrectOptionText();
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        _option(options[0]),
+        _option(options[1]),
+        _option(options[2]),
+        _option(correctOption),
+      ],
     );
   }
 }
