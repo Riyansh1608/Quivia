@@ -27,20 +27,17 @@ class HomeScreenProvider extends ChangeNotifier {
     var _response = await _dio.get(
       '',
       queryParameters: {
-        'amount': 10,
+        'amount': maxQuestion,
         'type': typeofquestion,
         'difficulty': difficulty,
       },
     );
     var _data = jsonDecode(_response.toString());
     questions = _data["results"];
-    print(questions![_currentQuestionCount]);
     notifyListeners();
   }
 
   String getCurrentQuestText() {
-    print(
-        "type : $typeofquestion \n amount : $maxQuestion \n difficulty : $difficulty");
     return questions![_currentQuestionCount]["question"];
   }
 
@@ -72,7 +69,7 @@ class HomeScreenProvider extends ChangeNotifier {
       },
     );
     await Future.delayed(
-      const Duration(seconds: 1),
+      const Duration(seconds: 2),
     );
     Navigator.pop(context);
     if (_currentQuestionCount == maxQuestion) {

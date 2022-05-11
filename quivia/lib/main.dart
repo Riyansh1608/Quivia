@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quivia/pages/base_screen.dart';
+import 'package:quivia/pages/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'ArchitectsDaughter',
         scaffoldBackgroundColor: Color.fromRGBO(31, 31, 31, 1.0),
       ),
-      home: const Base(),
+      home: const Splash(),
     );
   }
 }

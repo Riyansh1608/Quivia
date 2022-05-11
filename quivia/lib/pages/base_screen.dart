@@ -42,7 +42,7 @@ class _BaseState extends State<Base> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             quiviaLogo(),
-            typeOfQuestion,
+            typeOfQuestion(),
             totalQuestionSlider(),
             difficulySlider(),
             startButton(),
@@ -114,13 +114,15 @@ class _BaseState extends State<Base> {
     );
   }
 
-  Widget get typeOfQuestion {
+  Widget typeOfQuestion() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         MaterialButton(
+          minWidth: _deviceWidth! * 0.35,
+          height: _deviceHeight! * 0.06,
           onPressed: () {
             setState(() {
               type = "boolean";
@@ -135,6 +137,8 @@ class _BaseState extends State<Base> {
           color: k,
         ),
         MaterialButton(
+          minWidth: _deviceWidth! * 0.35,
+          height: _deviceHeight! * 0.06,
           onPressed: () {
             setState(() {
               type = "multiple";
@@ -173,10 +177,24 @@ class _BaseState extends State<Base> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return const AlertDialog(
-                backgroundColor: Colors.red,
-                title: Text("Choose Question Type"),
-                content: SingleChildScrollView(child: Text("hello")),
+              return AlertDialog(
+                backgroundColor: Colors.white,
+                title: const Text(
+                  "Choose Question Type",
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
+                ),
+                //content: SingleChildScrollView(child: Text("hello")),
+                actions: [
+                  TextButton(
+                    child: const Text(
+                      'OK',
+                      style: TextStyle(fontSize: 22),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
               );
             },
           );
