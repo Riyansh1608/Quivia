@@ -90,13 +90,19 @@ class HomeScreenProvider extends ChangeNotifier {
           backgroundColor: Colors.blue,
           title: const Text(
             "Game Over!",
-            style: TextStyle(fontSize: 25, color: Colors.white),
+            style: TextStyle(
+                fontSize: 28, color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          content: Text("Score : $_score/$maxQuestion "),
+          content: Text(
+            "Score : $_score/$maxQuestion ",
+            style: const TextStyle(
+                fontSize: 28, color: Colors.white, fontWeight: FontWeight.w400),
+          ),
         );
       },
     );
     await Future.delayed(const Duration(seconds: 3));
+    Navigator.pop(context);
     Navigator.pop(context);
     Navigator.pop(context);
     Navigator.push(

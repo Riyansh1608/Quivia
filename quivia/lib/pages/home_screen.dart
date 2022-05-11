@@ -53,14 +53,7 @@ class _HomeState extends State<Home> {
           )),
         );
       } else {
-        return AnimatedSplashScreen.withScreenFunction(
-          splash: Splash(),
-          screenFunction: () async {
-            return Base();
-          },
-          splashTransition: SplashTransition.rotationTransition,
-          // pageTransitionType: PageTransitionsTheme,
-        );
+        return Center(child: CircularProgressIndicator());
       }
     });
   }
