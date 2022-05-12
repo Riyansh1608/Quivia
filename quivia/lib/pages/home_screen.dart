@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +43,7 @@ class _HomeState extends State<Home> {
   Widget _buildUI() {
     return Builder(builder: (_context) {
       _pageProvider = _context.watch<HomeScreenProvider>();
-      if (_pageProvider!.questions != null) {
+      if (_pageProvider?.questions != null) {
         return Scaffold(
           body: SafeArea(
               child: Container(
@@ -53,9 +55,21 @@ class _HomeState extends State<Home> {
           )),
         );
       } else {
-        return Center(child: CircularProgressIndicator());
+        return quiviaLogo();
       }
     });
+  }
+
+  Widget quiviaLogo() {
+    return const Scaffold(
+      body: Center(
+        child: Text(
+          "Quivia",
+          style: TextStyle(
+              color: Colors.white, fontSize: 50, fontWeight: FontWeight.w400),
+        ),
+      ),
+    );
   }
 
   Widget _McqUi() {
@@ -155,7 +169,7 @@ class _HomeState extends State<Home> {
     String correctOption = _pageProvider!.getCorrectOptionText();
     options.add(correctOption);
     options.shuffle();
-    print(options);
+
     return Container(
       height: _deviceHeight! * 0.5,
       width: _deviceWidth! * 0.9,

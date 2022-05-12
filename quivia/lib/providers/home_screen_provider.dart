@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:quivia/pages/base_screen.dart';
+import 'dart:async';
 
 class HomeScreenProvider extends ChangeNotifier {
   final String? difficulty;
@@ -109,3 +110,5 @@ class HomeScreenProvider extends ChangeNotifier {
         context, MaterialPageRoute(builder: ((context) => const Base())));
   }
 }
+
+void setState(Null Function() param0) {}
